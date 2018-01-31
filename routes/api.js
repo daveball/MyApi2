@@ -61,7 +61,7 @@ router.post('/film', passport.authenticate('jwt', { session: false}), function(r
     var token = getToken(req.headers);
     if (token) {
         console.log(req.body);
-        var newFilm = newFilm({
+        var newFilm = new Film({
 
             title: req.body.title,
             director: req.body.title,
