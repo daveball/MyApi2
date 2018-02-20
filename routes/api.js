@@ -57,6 +57,10 @@ router.post('/signin', function(req, res) {
     });
 });
 
+
+// Film Reviews  REST Services
+
+//Create Film Review
 router.post('/film', passport.authenticate('jwt', { session: false}), function(req, res) {
     var token = getToken(req.headers);
     if (token) {
@@ -64,7 +68,7 @@ router.post('/film', passport.authenticate('jwt', { session: false}), function(r
         var newFilm = new Film({
 
             title: req.body.title,
-            director: req.body.title,
+            director: req.body.director,
             studio: req.body.studio,
             year: req.body.year,
             review: req.body.review,
@@ -83,6 +87,7 @@ router.post('/film', passport.authenticate('jwt', { session: false}), function(r
         return res.status(403).send({success: false, msg: 'Unauthorized.'});
     }
 });
+// Get All Films
 router.get('/film', passport.authenticate('jwt', { session: false}), function(req, res) {
     var token = getToken(req.headers);
     if (token) {
@@ -93,6 +98,46 @@ router.get('/film', passport.authenticate('jwt', { session: false}), function(re
     } else {
         return res.status(403).send({success: false, msg: 'Unauthorized.'});
     }
+});
+
+/* GET SINGLE Film BY ID */
+router.get('/film:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+    var token = getToken(req.headers);
+    if (token) {
+    Film.findById(req.params.id, function (err, post) {
+        if (err) return next(err);
+        res.json(post);
+    });
+    } else {
+        return res.status(403).send({success: false, msg: 'Unauthorized.'});
+    }
+});
+
+
+/* UPDATE Film Review */
+router.put('/film:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+    var token = getToken(req.headers);
+    if (token) {
+    Film.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+        if (err) return next(err);
+        res.json(post);
+    });
+    } else {
+        return res.status(403).send({success: false, msg: 'Unauthorized.'});
+    }
+});
+
+/* DELETE Film */
+router.delete('/film:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+    var token = getToken(req.headers);
+    if (token) {
+    Film.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+        if (err) return next(err);
+        res.json(post);
+    });
+    } else {
+    return res.status(403).send({success: false, msg: 'Unauthorized.'});
+}
 });
 
 getToken = function (headers) {
