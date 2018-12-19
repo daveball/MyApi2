@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 var User = require("../models/user");
 var Film = require("../models/film");
-
+var winston = require('./config/winston');
 
 ///Create router for signup or register the new user.
 router.post('/signup', function(req, res) {
@@ -80,11 +80,14 @@ router.post('/film', passport.authenticate('jwt', { session: false}), function(r
         newFilm.save(function(err) {
             if (err) {
                 return res.json({success: false, msg: 'Save film failed.'});
+                winston.info('Save film failed.');
             }
             res.json({success: true, msg: 'Successful created new film.'});
+            winston.info('Successful created new film.');
         });
     } else {
         return res.status(403).send({success: false, msg: 'Unauthorized.'});
+        winston.error('Unauthorized.');
     }
 });
 // Get All Films

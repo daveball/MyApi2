@@ -7,6 +7,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var config = require('./config/database');
+var morgan = require('morgan');
+var winston = require('./config/winston');
+
+
 
 
 try{
@@ -14,6 +18,7 @@ try{
 }
 catch(e){
     console.log(e.message);
+    winston.error(e.message);
 }
 
 
@@ -25,6 +30,10 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+//app.use(winston);
+app.use(morgan('combined', { stream: winston.stream }));
+
+winston.info("Initialised application");
 
 // add Cors Support before any routing
 app.use(function(req, res, next) {
@@ -35,7 +44,7 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(passport.initialize());
-
+winston.info("Initialised  passport");
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
