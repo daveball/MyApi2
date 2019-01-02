@@ -10,6 +10,8 @@ var config = require('./config/database');
 
 
 try{
+    mongoose.set('useNewUrlParser',true);
+    mongoose.set('useCreateIndex',true);
     mongoose.connect(config.database);
 }
 catch(e){

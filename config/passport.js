@@ -1,14 +1,14 @@
 
-var JwtStrategy = require('passport-jwt').Strategy;
-var    ExtractJwt = require('passport-jwt').ExtractJwt;
+const JwtStrategy = require('passport-jwt').Strategy;
+const    ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // load up the user model
-var User = require('../models/user');
-var config = require('../config/database'); // get db config file
+const User = require('../models/user');
+const config = require('./database'); // get db config file
 
 module.exports = function(passport) {
-    var opts = {};
-    var jwtOptions = {
+   let opts = {};
+   let jwtOptions = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
         secretOrKey: config.secret
     };
