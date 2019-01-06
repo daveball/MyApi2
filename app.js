@@ -7,13 +7,24 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const config = require('./config/database');
+const testing = require('./config/testdatabase');
 
 
 
 try{
     mongoose.set('useNewUrlParser',true);
     mongoose.set('useCreateIndex',true);
-    mongoose.connect(config.database);
+    if(process.env.NODE_ENV  ==='test'){
+        console.log("*******************");
+        console.log("Using test database");
+        console.log("*******************");
+        mongoose.connect(testing.database);
+    }else {
+        console.log("*******************");
+        console.log("Using live database");
+        console.log("*******************");
+        mongoose.connect(config.database);
+    }
 }
 catch(e){
     console.log(e.message);
