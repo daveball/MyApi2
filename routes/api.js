@@ -142,7 +142,7 @@ router.delete('/film:id', passport.authenticate('jwt', { session: false}), funct
     var token = getToken(req.headers);
     if (token) {
 
-            Film.findOneAndDelete({'_id' :req.params.id}, req.body, function (err, post) {
+            Film.findOneAndRemove({'_id' :req.params.id}, req.body, function (err, post) {
                 if (err) return next(err);
                 res.json(post);
             });
